@@ -1,23 +1,34 @@
 import logo from './logo.svg';
 import './App.css';
+import { useQuery } from '@apollo/client';
+import { gql } from '@apollo/client';
 
 function App() {
+
+  
+
+  const PROFILE_QUERY = gql`
+      query{
+        profile {
+          name
+          age
+          city
+        }
+      }
+    `;
+
+  const {loading, error, data} = useQuery(PROFILE_QUERY);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  const {name, age, city} = data.profile;
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Profile</h1>
+      <p>Name: {name}</p>
+      <p>Age: {age}</p>
+      <p>City: {city}</p>
     </div>
   );
 }
